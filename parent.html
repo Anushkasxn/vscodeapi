@@ -1,0 +1,48 @@
+<p>parent works!</p>
+<table border="2px" >
+   <thead>
+      <tr>
+        <th >custid</th>
+        <th >custname</th>
+        <th >custemail</th>
+        <th >custphone</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor ="let dataobj of Data">
+            <td >{{dataobj.custid}}</td>
+            <td>{{dataobj.custname}}</td>
+            <td >{{dataobj.custemail}}</td>
+            <td>{{dataobj.custcontact}}</td>
+        </tr>
+    </tbody>
+</table>
+<br>
+<br>
+<!-- {{Data | json}} -->
+<h3>Enter info for Post:</h3>
+<form [formGroup]="form56" (ngSubmit)="Save(form56.value)">
+  custid: <input type="text"  formControlName="custid"/>
+  custname: <input type="text" formControlName="custname" />
+  custemail: <input type="text"  formControlName="custemail" />
+  custcontact: <input type="text" formControlName="custcontact" />
+
+    <button type="submit">Add Details</button>
+</form>
+
+<h3>Enter info for Put:</h3>
+<form [formGroup]="Edit" (ngSubmit)="SaveAfterEdit(Edit.value)">
+  custid: <input type="text"  formControlName="custid"/>
+  custname: <input type="text" formControlName="custname" />
+  custemail: <input type="text"  formControlName="custemail" />
+  custcontact: <input type="text" formControlName="custcontact" />
+
+  <button type="submit">Save Edited Details</button>
+</form>
+
+<h3>Enter info for Delete:</h3>
+<form [formGroup]="DeleteDetails" (ngSubmit)="Delete(DeleteDetails.value)">
+  custid: <input type="text"  formControlName="custid"/>
+
+  <button type="submit">Delete Details</button>
+</form>
