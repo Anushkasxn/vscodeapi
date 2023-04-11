@@ -1,0 +1,82 @@
+import { Component, Input } from '@angular/core';
+import { AuthService} from '../services/auth.service';
+import { FormBuilder, FormControlName, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
+
+@Component({
+  selector: 'app-parent',
+  templateUrl: './parent.component.html',
+  styleUrls: ['./parent.component.css']
+})
+export class ParentComponent {
+  title='AngularAPI';
+  Data:any;
+  easy:any;
+  easyforput:any;
+  easyfordelete:any;
+  
+  form56:FormGroup;
+  Edit: FormGroup;
+  DeleteDetails:FormGroup;
+//post
+  constructor(private ServiceCall: AuthService,private route: Router,private formBuilder:FormBuilder)
+  {
+
+    this.form56=this.formBuilder.group({
+      custid:[""],
+      custname:[""],
+      custemail:[""],
+      custcontact:[""]
+    });
+
+    this.Edit=this.formBuilder.group({
+      custid:[""],
+      custname:[""],
+      custemail:[""],
+      custcontact:[""]
+    })
+
+    this.DeleteDetails=this.formBuilder.group({
+      custid:[""],
+      custname:[""],
+      custemail:[""],
+      custcontact:[""]
+    })
+    
+    
+    ServiceCall.get().subscribe((s:any)=>{
+        //get
+         this.Data=s;
+      
+    })
+    
+   
+    }
+  Save(item:any)
+  {
+  debugger;
+  this.easy=item;
+  this.form56
+  this.ServiceCall.postApi(this.easy).subscribe(res=>{
+    console.log(res);
+  });
+  }
+  SaveAfterEdit(item:any){
+    this.easyforput=item;
+    this.ServiceCall.putApi(this.easyforput).subscribe(res=>{
+     console.log(res);
+    })
+   }
+   Delete(item:any){
+    this.easyfordelete=item;
+    this.ServiceCall.DeleteApi(this.easyfordelete).subscribe(res=>{
+     console.log(res);
+    })
+   }
+}
+ 
+ 
+
+
+
