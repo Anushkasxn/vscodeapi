@@ -1,0 +1,84 @@
+using Microsoft.AspNetCore.Mvc;
+using System.Data;
+using Microsoft.AspNetCore.Http;
+using System.Data.SqlClient;
+using xyz.models;
+
+namespace xyz.Controllers
+{
+    [Route("api/[Controller]")]
+    [ApiController]
+    public class emp : ControllerBase
+    {
+        [HttpGet]
+        [Route("getEmployeeList")]
+        public IActionResult getallEmployee()
+        {
+            List<emp_anushka2023> empList = new List<emp_anushka2023>();
+            SqlConnection con = new SqlConnection("Server=192.168.0.240;Database=sdirectdb;User ID=sdirectdb;Password=sdirectdb;");
+            con.Open();
+            DataSet sa = new DataSet();
+            SqlDataAdapter adap = new SqlDataAdapter("select * from emp_anushka2023", con);
+            adap.Fill(sa);
+            if (sa.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow dr in sa.Tables[0].Rows)
+                {
+                    empList.Add(new emp_anushka2023 { custid =(int)dr.ItemArray[0], custname = dr.ItemArray[1].ToString(), custemail = dr.ItemArray[2].ToString(), custcontact = (long)dr.ItemArray[3] });
+                }
+            }
+            return Ok(empList);
+
+        }
+        [HttpPost]
+        [Route("postall")]
+        public IActionResult postall(emp_anushka2023 emp)
+        {
+            SqlConnection con = new SqlConnection("Server=192.168.0.240;Database=sdirectdb;User ID=sdirectdb;Password=sdirectdb;");
+            con.Open();
+
+            SqlCommand cmd = new SqlCommand("insert into emp_anushka2023(custname,custemail,custcontact)" +
+                "values('" +emp.custname+ "' , '"+emp.custemail+"' , '"+emp.custcontact+"')",con);
+            cmd.Connection = con;
+            cmd.ExecuteNonQuery();
+            con.Close();
+
+            return Ok(emp);
+        }
+
+        [HttpPut]
+        [Route("updatingData")]
+
+        public IActionResult updatingData(emp_anushka2023 emp)
+        {
+            SqlConnection con = new SqlConnection("Server=192.168.0.240;Database=sdirectdb;User ID=sdirectdb;Password=sdirectdb;");
+            con.Open();
+
+            SqlCommand cmd = new SqlCommand("UPDATE emp_anushka2023 SET custname='" + emp.custname + "',custemail='" + emp.custemail + "',custcontact='" + emp.custcontact +"'where custid='"+emp.custid+"'",con);
+            cmd.Connection = con;
+            cmd.Connection = con;
+            cmd.ExecuteNonQuery();
+            con.Close();
+
+            return Ok(emp);
+        }
+        
+        
+        [HttpDelete]
+        [Route("deleteall")]
+
+        public IActionResult deleteall(emp_anushka2023 emp) 
+        {
+            SqlConnection con = new SqlConnection("Server=192.168.0.240;Database=sdirectdb;User ID=sdirectdb;Password=sdirectdb;");
+            con.Open();
+
+            SqlCommand cmd = new SqlCommand("DELETE FROM emp_anushka2023 where custid='" + emp.custid + "'", con);
+            cmd.Connection = con;
+            cmd.Connection = con;
+            cmd.ExecuteNonQuery();
+            con.Close();
+
+            return Ok(emp);
+        }
+    }
+}
